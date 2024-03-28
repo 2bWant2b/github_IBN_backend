@@ -16,7 +16,7 @@ def get_agent_info():
     # for i in output:
     #     final_output += i
     #     final_output += "\n"
-    return output
+    return output.decode('utf-8')
     # print(output.decode('utf-8'))
 
 
