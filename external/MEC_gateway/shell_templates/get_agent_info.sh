@@ -1,6 +1,7 @@
 #!/bin/bash
 #return: 网卡，连接方式，连接状态，连接名，ipv4地址
 echo "running $0"
+echo "kc304@KC304" | sudo su
 nmcli device | awk 'NR>=2' | while read -r line
 do
   net_card=($line)
