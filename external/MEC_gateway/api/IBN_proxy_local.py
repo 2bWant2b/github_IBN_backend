@@ -12,11 +12,11 @@ def get_agent_info():
     result = subprocess.Popen([shell_path], stdout=subprocess.PIPE)
     # 获取脚本输出
     output, error = result.communicate()
-    final_output = ""
-    for i in output:
-        final_output += i
-        final_output += "\n"
-    return final_output
+    # final_output = ""
+    # for i in output:
+    #     final_output += i
+    #     final_output += "\n"
+    return output
     # print(output.decode('utf-8'))
 
 
