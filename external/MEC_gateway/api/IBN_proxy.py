@@ -35,7 +35,7 @@ def change_ip(device_ipv4, con_name, ip):
     ssh = SSHConnection(device_ipv4, 22, "lxt", "kc304@KC304")
     ssh.connect()
     # 注意，windows中用反斜杠\，linux中用正斜杠/
-    ssh.upload(os.path.normpath(os.path.join(shell_dir, "change_ip.sh")))
+    ssh.upload(os.path.normpath(os.path.join(shell_dir, "change_agent_ip.sh")))
     ssh.run_remote_file(con_name, ip)
     ssh.close()
 
