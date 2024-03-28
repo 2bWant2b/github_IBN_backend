@@ -2,8 +2,9 @@ from external.MEC_gateway.api.IBN_proxy_local import get_agent_info
 import re
 
 info = get_agent_info()
-matches = re.findall(r'enp7s0\s+ethernet\s+connected\s+enp7s0\s+[\S]+', info)
+matches = re.findall(r'enp7s0\s+ethernet\s+connected\s+enp7s0\s+([\d.]+)', info)
 ip_address = matches[0].split()[-1]
+
 
 def get_topology():
     topology = {"data": [
@@ -17,4 +18,9 @@ def get_topology():
                  {"source": "意图驱动代理", "target": "卫星网络设备"},
                  ]}
 
-    return ip_address
+    if ip_address != "192.168.30.1":
+        del topology["data"][1]
+        topology["links"] = [item for item in topology["links"] if
+                             "自组织网节点node40" not in [item["source"], item["target"]]]
+
+    return topology
