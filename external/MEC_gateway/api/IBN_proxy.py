@@ -10,7 +10,7 @@ def get_brief_net_info(device_ip):
     ssh = SSHConnection(device_ip, 22, "lxt", "kc304@KC304")
     ssh.connect()
     # 注意，windows中用反斜杠\，linux中用正斜杠/
-    ssh.upload(os.path.normpath(os.path.join(shell_dir, "get_brief_net_info.sh")))
+    ssh.upload(os.path.normpath(os.path.join(shell_dir, "get_agent_info.sh")))
     return_value = ssh.run_remote_file(get_return_value=True)  # 仅传参
     final_return_value = ""
     for i in return_value:
