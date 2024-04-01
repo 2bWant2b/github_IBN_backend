@@ -14,5 +14,5 @@ class GetAgentInfo(Resource):
         # except:
         #     return {"message": f"agent {device_id} not found."}, 404
 
-        info = get_agent_info()
+        info = get_agent_info("nmcli")
         return {"message": [info]}
