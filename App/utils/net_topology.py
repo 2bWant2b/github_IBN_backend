@@ -3,25 +3,51 @@ import re
 
 
 def get_topology():
-    info = get_agent_info("nmcli")
-    matches = re.findall(r'enp7s0\s+ethernet\s+connected\s+enp7s0\s+[\S]+', info)
+    info = get_agent_info("ifconfig")
+    network_cards = {}
+    # 使用正则表达式匹配每个网卡信息块
+    pattern = re.compile(r'(?P<card>\S+): flags=\d+<(?P<flags>[^>]*)>\s+mtu\s+\d+\s+(?P<other_info>.+?)\n(?=\S|$)',
+                         re.DOTALL)
+    matches = pattern.finditer(info)
 
+    for match in matches:
+        card = match.group('card')
+        flags = match.group('flags')
+        other_info = match.group('other_info')
+        network_cards[card] = []
+
+        if 'RUNNING' in flags.split(','):
+            network_cards[card].append('on')
+        else:
+            network_cards[card].append('off')
+
+        network_cards[card].append('none')
+        match_ip = re.search(r'inet (\d+\.\d+\.\d+\.\d+)', other_info)
+        if match_ip:
+            network_cards[card][1] = match_ip.group(1)
 
     topology = {"data": [
         {"name": "意图驱动代理", "x": 500, "y": 500},
-        {"name": "自组织网节点1", "x": 700, "y": 600},
-        {"name": "自组织网节点1", "x": 800, "y": 600},
-        {"name": "集群网络设备1", "x": 200, "y": 700},
-        {"name": "卫星网络设备", "x": 600, "y": 100}
+        {"name": "自组织网设备1", "x": 700, "y": 600},  # enp8s0
+        {"name": "自组织网设备2", "x": 800, "y": 600},  # enp10s0
+        {"name": "集群网络设备", "x": 200, "y": 700},   # enp9s0
+        {"name": "卫星网络设备", "x": 600, "y": 100}    # enp7s0
 
-    ], "links": [{"source": "意图驱动代理", "target": "自组织网节点node40"},
-                 {"source": "意图驱动代理", "target": "集群网络设备1"},
-                 {"source": "意图驱动代理", "target": "卫星网络设备"},
+    ], "links": [{"source": "意图驱动代理", "target": "自组织网设备1"},  # enp8s0
+                 {"source": "意图驱动代理", "target": "自组织网设备2"},  # enp10s0
+                 {"source": "意图驱动代理", "target": "集群网络设备"},   # enp9s0
+                 {"source": "意图驱动代理", "target": "卫星网络设备"},   # enp7s0
                  ]}
-    if matches != "192.168.30.1/32":
-        topology = {"ok": "1"}
 
-    print(topology)
+    if network_cards["enp8s0"][0] == "off":
+        del topology["links"][0]
+    elif network_cards["enp10s0"][0] == "off":
+        del topology["links"][1]
+    elif network_cards["enp9s0"][0] == "off":
+        del topology["links"][2]
+    elif network_cards["enp7s0"][0] == "off":
+        del topology["links"][3]
+
     return topology
 
 

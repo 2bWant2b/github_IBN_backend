@@ -9,9 +9,8 @@ if [ "$1" = "nmcli" ]; then
       ipv4_address=$(nmcli d show ${net_card[0]} | awk '$1=="IP4.ADDRESS[1]:" {print $2}')
       printf "%s\t    %s\n" "$line" "$ipv4_address"
       done
+elif [ "$1" = "ifconfig" ]; then
+    ifconfig
 fi
-
-
-
 
 
