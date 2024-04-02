@@ -33,20 +33,16 @@ def get_topology():
         {"name": "集群网络设备", "x": 200, "y": 700},   # enp9s0
         {"name": "卫星网络设备", "x": 600, "y": 100}    # enp7s0
 
-    ], "links": [{"source": "意图驱动代理", "target": "自组织网设备1"},  # enp8s0
-                 {"source": "意图驱动代理", "target": "自组织网设备2"},  # enp10s0
-                 {"source": "意图驱动代理", "target": "集群网络设备"},   # enp9s0
-                 {"source": "意图驱动代理", "target": "卫星网络设备"},   # enp7s0
-                 ]}
+    ], "links": []}
 
-    if network_cards["enp8s0"][0] == "off":
-        del topology["links"][0]
-    elif network_cards["enp10s0"][0] == "off":
-        del topology["links"][1]
-    elif network_cards["enp9s0"][0] == "off":
-        del topology["links"][2]
-    elif network_cards["enp7s0"][0] == "off":
-        del topology["links"][3]
+    if network_cards["enp8s0"][0] == "on":
+        topology["links"].append({"source": "意图驱动代理", "target": "自组织网设备1"})
+    if network_cards["enp10s0"][0] == "on":
+        topology["links"].append({"source": "意图驱动代理", "target": "自组织网设备2"})
+    if network_cards["enp9s0"][0] == "on":
+        topology["links"].append({"source": "意图驱动代理", "target": "集群网络设备"})
+    if network_cards["enp7s0"][0] == "on":
+        topology["links"].append({"source": "意图驱动代理", "target": "卫星网络设备"})
 
     return topology
 
