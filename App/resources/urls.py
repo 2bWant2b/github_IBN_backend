@@ -2,7 +2,7 @@ from ..resources.user import UserRegister, User, UserLogin, UserLogout, TokenRef
 from ..resources.role import Role, RoleList
 from ..resources.AdHocEquip import AdHocEquip, AdHocEquipList
 from ..resources.router import Router
-from ..resources.intent import Intent
+from ..resources.intent import IntentTranslate, IntentExecute
 from ..resources.test_topology import TestTopology
 from ..resources.tcweb import Tcweb
 from ..resources.manual.change_agent_ip import ChangeAgentIP
@@ -21,7 +21,8 @@ api.add_resource(RoleList, "/roles")
 api.add_resource(AdHocEquip, "/adhocequip/<string:name>")
 api.add_resource(AdHocEquipList, "/adhocequips")
 api.add_resource(Router, '/router/<string:name>')
-api.add_resource(Intent, "/intents")
+api.add_resource(IntentTranslate, "/intents/translate")
+api.add_resource(IntentExecute, "/intents/execute")
 api.add_resource(TestTopology, "/topology")
 api.add_resource(Tcweb, "/tcweb")
 api.add_resource(ChangeAgentIP, "/manual/changeagentip")
