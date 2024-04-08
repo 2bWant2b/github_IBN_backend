@@ -1,5 +1,5 @@
 from pytorch_models.api.basic_api import text_to_intention
-from external.MEC_gateway.api.IBN_proxy import *
+from external.MEC_gateway.api.IBN_proxy_local import *
 from ..models.router import RouterModel
 from ..utils.param_config import param_config
 import os
@@ -33,18 +33,19 @@ def intent_execute(user_text):
         net_card = intent_dic["kwargs"]["net_card"]
         con_type = "ethernet"
         ip_v4 = intent_dic["kwargs"]["ipv4_address"] + "/24"
-        set_ip(device_ipv4, "connection1", net_card, con_type, ip_v4)
+        # set_ip(device_ipv4, "connection1", net_card, con_type, ip_v4)
         return f"{device_id}号意图驱动代理的{net_card}网卡的ip已被设置为{ip_v4}"
     elif intent == "get_net_info":
-        device_id = intent_dic["kwargs"]["device_id"]
-        device_ipv4 = RouterModel.find_by_id(device_id).ip
-        net_info = get_brief_net_info(device_ipv4)
+        # device_id = intent_dic["kwargs"]["device_id"]
+        # device_ipv4 = RouterModel.find_by_id(device_id).ip
+        # net_info = get_brief_net_info(device_ipv4)
+        net_info = get_agent_info("nmcli")
         return net_info
     elif intent == "shutdown_con":
         device_id = intent_dic["kwargs"]["device_id"]
         device_ipv4 = RouterModel.find_by_id(device_id).ip
         con_name = intent_dic["kwargs"]["con_name"]
-        shutdown_con(device_ipv4, con_name)
+        # shutdown_con(device_ipv4, con_name)
         return f"{device_id}号意图驱动代理的{con_name}连接已关闭"
     elif intent == "config":
         device_name = intent_dic["kwargs"]["device_name"]
